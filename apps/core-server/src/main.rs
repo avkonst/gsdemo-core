@@ -65,13 +65,15 @@ async fn get_row(
 
 #[tokio::main]
 async fn main() {
-    tracing_subscriber::init();
+    appbase::init();
 
     let database_url =
         std::env::var("DATABASE_URL").unwrap_or_else(|_| "postgres://localhost/gsdemo".into());
     let sso_url = std::env::var("SSO_URL").unwrap_or_else(|_| "http://localhost:3001".into());
 
-    let db = PgPool::connect(&database_url).await.expect("DB connect failed");
+    let db = PgPool::connect(&database_url)
+        .await
+        .expect("DB connect failed");
 
     let state = AppState { db, sso_url };
 

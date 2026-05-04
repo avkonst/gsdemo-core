@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = [
+    "apps/core-server",
+    "apps/migrations",
+]
+
+[workspace.dependencies]
+appbase = { path = "gsdemo-sharedlibs/libs/appbase" }
+logging = { path = "gsdemo-sharedlibs/libs/logging" }
+axum = "0.7"
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sqlx = { version = "0.7", features = ["runtime-tokio", "postgres"] }
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
