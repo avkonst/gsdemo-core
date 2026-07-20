@@ -1,5 +1,6 @@
 [repos]
-"gsdemo-sharedlibs" = { url = "https://github.com/avkonst/gsdemo-sharedlibs.git", revision = "master" }
+"gsdemo-sharedlibs" = { url = "https://github.com/avkonst/gsdemo-sharedlibs.git", revision = "master", mode = "readonly" }
+"gsdemo-sso" = { url = "https://github.com/avkonst/gsdemo-sso.git", revision = "master", mode = "artefact" }
 
 [hooks]
 post_sync = "echo 'post-sync hook executed successfully'"
