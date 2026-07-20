@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: gsdemo
+      POSTGRES_PASSWORD: gsdemo
+      POSTGRES_DB: gsdemo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gsdemo"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  migrations:
+    image: gsdemo-core-migrations:${gsdemo-core-migrations-version}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://gsdemo:gsdemo@postgres:5432/gsdemo
+
+  core-server:
+    image: gsdemo-core-server:${gsdemo-core-server-version}
+    ports:
+      - "3002:3002"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgres://gsdemo:gsdemo@postgres:5432/gsdemo
+      SSO_URL: http://host.docker.internal:3001
+      CORE_ADDR: "0.0.0.0:3002"
+
+volumes:
+  pgdata:
